@@ -76,79 +76,151 @@ button {
 .nav-links a:hover {
   color: #a5e887;
 }
-
-
-/* =========================================
-   HERO
-========================================= */
+/* =========================
+   HERO SECTION
+========================= */
 
 .hero {
-  width: 100%;
   min-height: 620px;
+  background:
+    linear-gradient(
+      120deg,
+      rgba(7, 32, 20, 0.97),
+      rgba(18, 59, 40, 0.9),
+      rgba(35, 88, 55, 0.75)
+    ),
+    url("https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=1800&q=80");
 
-  padding: 100px 8%;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
 
+.hero-overlay {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  position: relative;
-
-  background:
-    radial-gradient(
-      circle at 80% 50%,
-      rgba(165, 232, 135, 0.15),
-      transparent 30%
-    ),
-    #0d2b1b;
-
-  color: #ffffff;
+  gap: 50px;
+  padding: 80px 0;
 }
 
 .hero-content {
-  max-width: 680px;
+  max-width: 650px;
   z-index: 2;
 }
 
 .hero-tag {
   display: inline-block;
-
-  color: #a5e887;
+  background: rgba(155, 229, 138, 0.15);
+  border: 1px solid rgba(155, 229, 138, 0.5);
+  color: #b7f5a9;
+  padding: 10px 18px;
+  border-radius: 30px;
   font-size: 13px;
-  font-weight: 700;
-
-  letter-spacing: 2px;
-  margin-bottom: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 25px;
 }
 
 .hero h1 {
-  font-size: clamp(55px, 8vw, 90px);
+  font-size: 72px;
   line-height: 0.95;
-  margin-bottom: 20px;
+  margin: 0;
   font-weight: 800;
+  letter-spacing: -3px;
 }
 
 .hero h1 span {
-  color: #a5e887;
+  display: block;
+  color: #9be58a;
 }
 
-.hero-content > p {
-  max-width: 560px;
+.hero-subtitle {
+  font-size: 27px;
+  font-weight: 600;
+  margin: 25px 0 15px;
+}
 
-  color: #d6e2d9;
-  font-size: 18px;
-
-  line-height: 1.8;
+.hero-description {
+  font-size: 17px;
+  line-height: 1.7;
+  color: #dce9df;
+  max-width: 580px;
 }
 
 .hero-buttons {
   display: flex;
-  align-items: center;
   gap: 15px;
-
   margin-top: 35px;
 }
 
+.hero-btn {
+  text-decoration: none;
+  padding: 15px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.primary-btn {
+  background: #9be58a;
+  color: #10251a;
+}
+
+.primary-btn:hover {
+  background: white;
+  transform: translateY(-3px);
+}
+
+.secondary-btn {
+  border: 2px solid white;
+  color: white;
+}
+
+.secondary-btn:hover {
+  background: white;
+  color: #123b28;
+  transform: translateY(-3px);
+}
+
+/* Decorative tennis ball */
+
+.hero-tennis {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(155, 229, 138, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: floatBall 4s ease-in-out infinite;
+}
+
+.tennis-ball {
+  font-size: 150px;
+  filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.4));
+}
+
+@keyframes floatBall {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-18px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
 .primary-button,
 .secondary-button {
   display: inline-flex;
@@ -1254,5 +1326,1234 @@ button {
       55px;
 
     font-size: 10px;
+  }
+}
+@media (max-width: 768px) {
+  .hero {
+    min-height: 650px;
+  }
+
+  .hero-overlay {
+    flex-direction: column;
+    text-align: center;
+    padding: 60px 0;
+  }
+
+  .hero h1 {
+    font-size: 52px;
+  }
+
+  .hero-subtitle {
+    font-size: 22px;
+  }
+
+  .hero-description {
+    font-size: 15px;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero-tennis {
+    width: 160px;
+    height: 160px;
+  }
+
+  .tennis-ball {
+    font-size: 80px;
+  }
+}
+/* =========================
+   PLAYERS SECTION
+========================= */
+
+.players-section {
+  padding: 90px 5%;
+  background: #f4f7f4;
+}
+
+.section-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 35px;
+}
+
+.section-tag {
+  color: #287344;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.section-header h2 {
+  font-size: 42px;
+  margin: 10px 0;
+  color: #123b28;
+}
+
+.section-header p {
+  color: #66756b;
+  font-size: 16px;
+}
+
+/* FILTER BUTTONS */
+
+.player-filter {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 45px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  border: 1px solid #cbd8ce;
+  background: white;
+  color: #31513d;
+  padding: 11px 22px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.filter-btn:hover {
+  background: #123b28;
+  color: white;
+}
+
+.filter-btn.active {
+  background: #123b28;
+  color: white;
+  border-color: #123b28;
+}
+
+/* PLAYER GRID */
+
+.players-grid {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+/* PLAYER CARD */
+
+.player-card {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(18, 59, 40, 0.08);
+  transition: 0.3s ease;
+}
+
+.player-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(18, 59, 40, 0.15);
+}
+
+.player-number {
+  position: absolute;
+  right: 20px;
+  top: 18px;
+  font-size: 42px;
+  font-weight: 800;
+  color: #edf3ee;
+}
+
+.player-avatar {
+  width: 75px;
+  height: 75px;
+  background: #e9f5e9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  margin-bottom: 20px;
+}
+
+.player-team {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.player-team.men {
+  color: #286b45;
+}
+
+.player-team.women {
+  color: #9b4778;
+}
+
+.player-info h3 {
+  margin: 8px 0 5px;
+  font-size: 23px;
+  color: #17251c;
+}
+
+.player-info p {
+  margin: 0;
+  color: #758178;
+  font-size: 14px;
+}
+
+/* PLAYER STATS */
+
+.player-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid #e5ebe6;
+  border-bottom: 1px solid #e5ebe6;
+  margin: 25px 0;
+  padding: 18px 0;
+}
+
+.player-stats div {
+  text-align: center;
+  border-right: 1px solid #e5ebe6;
+}
+
+.player-stats div:last-child {
+  border-right: none;
+}
+
+.player-stats strong {
+  display: block;
+  font-size: 21px;
+  color: #123b28;
+}
+
+.player-stats span {
+  font-size: 11px;
+  color: #7a867e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* WIN RATE */
+
+.win-rate-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 9px;
+  font-size: 13px;
+}
+
+.win-rate-header strong {
+  color: #287344;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 7px;
+  background: #e5ebe6;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #71bd62;
+  border-radius: 20px;
+  transition: width 1s ease;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  .players-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .players-section {
+    padding: 65px 5%;
+  }
+
+  .section-header h2 {
+    font-size: 32px;
+  }
+
+  .players-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .player-card {
+    padding: 23px;
+  }
+}
+/* ========================================
+   JOIN KYU TENNIS TEAM SECTION
+   ======================================== */
+
+.join-tennis-section {
+  width: 100%;
+  padding: 80px 20px;
+  background: #f5f8f6;
+  box-sizing: border-box;
+}
+
+.join-tennis-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Heading */
+
+.join-tennis-heading {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 35px;
+}
+
+.tennis-ball {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #0f5132;
+  border-radius: 15px;
+
+  font-size: 30px;
+  flex-shrink: 0;
+}
+
+.join-tennis-heading h2 {
+  margin: 0 0 8px;
+  font-size: 30px;
+  color: #17221c;
+}
+
+.join-tennis-heading p {
+  margin: 0;
+  max-width: 650px;
+
+  color: #6b756f;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Form */
+
+.join-tennis-form {
+  width: 100%;
+  padding: 35px;
+
+  background: #ffffff;
+  border-radius: 18px;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* Two-column layout */
+
+.tennis-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+/* Fields */
+
+.tennis-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tennis-field label {
+  margin-bottom: 8px;
+
+  color: #35423a;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tennis-field input,
+.tennis-field select,
+.tennis-field textarea {
+  width: 100%;
+  padding: 13px 14px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #d8dfda;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #222;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  outline: none;
+
+  transition: all 0.2s ease;
+}
+
+/* Placeholder */
+
+.tennis-field input::placeholder,
+.tennis-field textarea::placeholder {
+  color: #9aa39d;
+}
+
+/* Focus */
+
+.tennis-field input:focus,
+.tennis-field select:focus,
+.tennis-field textarea:focus {
+  border-color: #198754;
+
+  box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.1);
+}
+
+/* Message */
+
+.tennis-message {
+  margin-top: 22px;
+}
+
+.tennis-field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Checkbox */
+
+.tennis-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-top: 25px;
+
+  color: #555;
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.tennis-checkbox input {
+  width: 17px;
+  height: 17px;
+
+  margin: 0;
+
+  accent-color: #0f5132;
+}
+
+/* Submit button */
+
+.tennis-submit-btn {
+  width: 100%;
+
+  margin-top: 25px;
+  padding: 15px 20px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #0f5132;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.tennis-submit-btn:hover {
+  background: #0b3d26;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 6px 18px rgba(15, 81, 50, 0.2);
+}
+
+.tennis-submit-btn:active {
+  transform: translateY(0);
+}
+
+
+/* ========================================
+   TABLET
+   ======================================== */
+
+@media (max-width: 750px) {
+
+  .join-tennis-section {
+    padding: 60px 18px;
+  }
+
+  .join-tennis-form {
+    padding: 25px;
+  }
+
+  .tennis-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* ========================================
+   MOBILE
+   ======================================== */
+
+@media (max-width: 500px) {
+
+  .join-tennis-section {
+    padding: 45px 12px;
+  }
+
+  .join-tennis-heading {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .tennis-ball {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+
+  .join-tennis-heading h2 {
+    font-size: 23px;
+  }
+
+  .join-tennis-heading p {
+    font-size: 13px;
+  }
+
+  .join-tennis-form {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .tennis-field input,
+  .tennis-field select,
+  .tennis-field textarea {
+    font-size: 14px;
+  }
+
+}
+/* =========================================
+   DAILY ATTENDANCE TRACKER
+   ========================================= */
+
+.attendance-section {
+  width: 100%;
+  padding: 80px 20px;
+  background: #f5f8f6;
+  box-sizing: border-box;
+}
+
+.attendance-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ---------- HEADER ---------- */
+
+.attendance-section .attendance-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.attendance-label {
+  display: inline-block;
+  margin-bottom: 8px;
+
+  color: #198754;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.attendance-section .attendance-header h2 {
+  margin: 0 0 8px;
+
+  color: #17221c;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.attendance-section .attendance-header p {
+  margin: 0;
+
+  color: #6b756f;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ---------- DATE ---------- */
+
+.attendance-date {
+  min-width: 150px;
+  padding: 14px 18px;
+
+  background: #ffffff;
+  border: 1px solid #e3e9e5;
+  border-radius: 10px;
+
+  text-align: right;
+}
+
+.attendance-date span {
+  display: block;
+  margin-bottom: 5px;
+
+  color: #8a938e;
+  font-size: 12px;
+}
+
+.attendance-date strong {
+  color: #17221c;
+  font-size: 14px;
+}
+
+/* ---------- SUMMARY CARDS ---------- */
+
+.attendance-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.attendance-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 20px;
+
+  background: #ffffff;
+  border: 1px solid #e6ebe8;
+  border-radius: 14px;
+
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+}
+
+.attendance-card-icon {
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #edf6f1;
+  border-radius: 11px;
+
+  font-size: 21px;
+}
+
+.attendance-card span {
+  display: block;
+  margin-bottom: 5px;
+
+  color: #7a847e;
+  font-size: 12px;
+}
+
+.attendance-card h3 {
+  margin: 0;
+
+  color: #17221c;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* ---------- RECORDS CONTAINER ---------- */
+
+.attendance-records {
+  overflow: hidden;
+
+  background: #ffffff;
+  border: 1px solid #e3e9e5;
+  border-radius: 16px;
+
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- RECORDS HEADER ---------- */
+
+.attendance-records-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 24px 25px;
+
+  border-bottom: 1px solid #e8ece9;
+}
+
+.attendance-records-header h3 {
+  margin: 0 0 5px;
+
+  color: #17221c;
+  font-size: 18px;
+}
+
+.attendance-records-header p {
+  margin: 0;
+
+  color: #89928d;
+  font-size: 13px;
+}
+
+/* ---------- MARK ATTENDANCE BUTTON ---------- */
+
+.mark-attendance-btn {
+  padding: 11px 17px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #0f5132;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.mark-attendance-btn:hover {
+  background: #0b3d26;
+  transform: translateY(-1px);
+}
+
+.mark-attendance-btn:active {
+  transform: translateY(0);
+}
+
+/* ---------- TABLE ---------- */
+
+.attendance-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.attendance-table {
+  width: 100%;
+  min-width: 650px;
+
+  border-collapse: collapse;
+}
+
+.attendance-table th {
+  padding: 14px 25px;
+
+  background: #fafcfb;
+
+  color: #7a847e;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+
+  border-bottom: 1px solid #e8ece9;
+}
+
+.attendance-table td {
+  padding: 16px 25px;
+
+  color: #4d5851;
+  font-size: 13px;
+
+  border-bottom: 1px solid #edf0ee;
+}
+
+.attendance-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.attendance-table tbody tr:hover {
+  background: #fafcfb;
+}
+
+/* ---------- MEMBER NAME ---------- */
+
+.member-name {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  color: #26332c;
+  font-weight: 600;
+}
+
+.member-avatar {
+  width: 35px;
+  height: 35px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e8f3ed;
+  color: #0f5132;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ---------- STATUS ---------- */
+
+.attendance-status {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.attendance-status.present {
+  background: #e5f5ec;
+  color: #14733f;
+}
+
+.attendance-status.absent {
+  background: #fdeaea;
+  color: #c0392b;
+}
+
+.attendance-status.late {
+  background: #fff3dc;
+  color: #a56600;
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 850px) {
+
+  .attendance-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .attendance-section .attendance-header {
+    align-items: flex-start;
+  }
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .attendance-section {
+    padding: 55px 15px;
+  }
+
+  .attendance-section .attendance-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .attendance-section .attendance-header h2 {
+    font-size: 25px;
+  }
+
+  .attendance-date {
+    width: fit-content;
+    min-width: 140px;
+    text-align: left;
+  }
+
+  .attendance-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .attendance-card {
+    padding: 15px;
+    gap: 10px;
+  }
+
+  .attendance-card-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .attendance-card h3 {
+    font-size: 20px;
+  }
+
+  .attendance-records-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .mark-attendance-btn {
+    width: 100%;
+  }
+
+  .attendance-table th,
+  .attendance-table td {
+    padding: 13px 16px;
+  }
+}
+
+
+/* =========================================
+   SMALL PHONES
+   ========================================= */
+
+@media (max-width: 400px) {
+
+  .attendance-section {
+    padding: 45px 10px;
+  }
+
+  .attendance-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .attendance-card {
+    justify-content: flex-start;
+  }
+
+  .attendance-section .attendance-header h2 {
+    font-size: 22px;
+  }
+}
+/* =========================================================
+   KYU TENNIS TEAM - TRAINING SCHEDULE
+   ========================================================= */
+
+.training-section {
+  padding: 80px 20px;
+  background: #f7f9fc;
+}
+
+.training-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.training-header {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.training-label {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.training-header h2 {
+  font-size: 38px;
+  margin: 0 0 12px;
+  color: #111827;
+}
+
+.training-header p {
+  color: #6b7280;
+  max-width: 650px;
+  margin: auto;
+  line-height: 1.7;
+}
+
+.training-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.training-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.training-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.training-day {
+  font-size: 13px;
+  font-weight: 800;
+  color: #2563eb;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.training-icon {
+  font-size: 38px;
+  margin-bottom: 15px;
+}
+
+.training-card h3 {
+  font-size: 20px;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.training-time {
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.training-location {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.training-level {
+  display: inline-block;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.training-note {
+  margin-top: 30px;
+  padding: 18px 22px;
+  background: #ffffff;
+  border-left: 4px solid #2563eb;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #4b5563;
+}
+
+.training-note strong {
+  color: #111827;
+}
+
+
+/* =========================================================
+   KYU TENNIS TEAM - ANNOUNCEMENTS
+   ========================================================= */
+
+.announcements-section {
+  padding: 80px 20px;
+  background: #ffffff;
+}
+
+.announcements-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.announcements-header {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.announcements-label {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.announcements-header h2 {
+  font-size: 38px;
+  margin: 0 0 12px;
+  color: #111827;
+}
+
+.announcements-header p {
+  color: #6b7280;
+  max-width: 650px;
+  margin: auto;
+  line-height: 1.7;
+}
+
+.announcements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.announcement-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.announcement-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+}
+
+.announcement-icon {
+  width: 55px;
+  height: 55px;
+  min-width: 55px;
+  border-radius: 50%;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+}
+
+.announcement-content {
+  flex: 1;
+}
+
+.announcement-date {
+  font-size: 11px;
+  font-weight: 700;
+  color: #2563eb;
+  letter-spacing: 1px;
+}
+
+.announcement-content h3 {
+  margin: 6px 0 7px;
+  font-size: 19px;
+  color: #111827;
+}
+
+.announcement-content p {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.announcement-tag {
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.announcement-tag.important {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.announcement-tag.match {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.announcement-tag.new {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.announcement-footer {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.announcement-footer p {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
+
+@media (max-width: 1000px) {
+  .training-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+
+  .training-section,
+  .announcements-section {
+    padding: 60px 15px;
+  }
+
+  .training-header h2,
+  .announcements-header h2 {
+    font-size: 30px;
+  }
+
+  .training-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .training-note {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .announcement-card {
+    align-items: flex-start;
+    padding: 18px;
+  }
+
+  .announcement-icon {
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+    font-size: 20px;
+  }
+
+  .announcement-tag {
+    display: none;
   }
 }
