@@ -556,7 +556,7 @@ function App() {
         </div>
       </section>
    {/* ==================== ANNOUNCEMENTS ==================== */}
-      <section className="announcements-section" id="announcements">
+<section className="announcements-section" id="announcements">
         <div className="announcements-container">
 
           <div className="announcements-header">
@@ -624,7 +624,7 @@ function App() {
           </div>
 
         </div>
-      </section>
+      </section>      
       {/* ================= DAILY ATTENDANCE TRACKER ================= */}
       <section className="attendance-section" id="attendance">
         <div className="attendance-container">
