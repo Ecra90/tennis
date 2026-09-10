@@ -1,6 +1,5 @@
 import "./App.css";
 import React, { useState } from "react";
-import JoinTennisTeam from "./pages/JoinTennisTeam";
 function App() {
   return (
     <div className="app">
