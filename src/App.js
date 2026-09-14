@@ -1,6 +1,161 @@
+import React, { useEffect, useState } from "react";
 import "./App.css";
-import React, { useState } from "react";
+const API_URL = "http://127.0.0.1:5000/api";
 function App() {
+  const [announcements, setAnnouncements] = useState([]);
+  const [loadingAnnouncements, setLoadingAnnouncements] = useState(true);
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      try {
+        const response = await fetch(`${API_URL}/announcements`);
+        const data = await response.json();
+        setAnnouncements(data);
+      } catch (error) {
+        console.error("Error fetching announcements:", error);
+      } finally {
+        setLoadingAnnouncements(false);
+      }
+    };
+
+    fetchAnnouncements();
+  }, []);
+  const [trainingSessions, setTrainingSessions] = useState([]);
+  const [loadingTraining, setLoadingTraining] = useState(true);
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/api/training")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to load training schedule");
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        setTrainingSessions(data);
+        setLoadingTraining(false);
+      })
+      .catch((error) => {
+        console.error("Training error:", error);
+        setLoadingTraining(false);
+      });
+  }, []);
+  const [players, setPlayers] = useState([]);
+  const [loadingPlayers, setLoadingPlayers] = useState(true);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/api/players")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to load players");
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        setPlayers(data);
+        setLoadingPlayers(false);
+      })
+      .catch((error) => {
+        console.error("Players error:", error);
+        setLoadingPlayers(false);
+      });
+  }, []);
+  const [attendance, setAttendance] = useState({});
+  const [attendanceMessage, setAttendanceMessage] = useState("");
+  const markAttendance = async (playerId, status) => {
+    const today = new Date().toISOString().split("T")[0];
+
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:5000/api/attendance",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            player_id: playerId,
+            status: status,
+            date: today
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Failed to record attendance"
+        );
+      }
+
+      setAttendance((previous) => ({
+        ...previous,
+        [playerId]: status
+      }));
+
+      // Make sure history displays today's records
+      setHistoryDate(today);
+
+      // Refresh attendance history
+      await loadAttendanceHistory(today);
+
+      setAttendanceMessage(
+        `${status} attendance recorded successfully! 🎾`
+      );
+
+      setTimeout(() => {
+        setAttendanceMessage("");
+      }, 3000);
+
+    } catch (error) {
+      console.error("Attendance error:", error);
+
+      setAttendanceMessage(
+        "Unable to record attendance. Please try again."
+      );
+    }
+  };
+  const [attendanceHistory, setAttendanceHistory] = useState([]);
+  const [historyDate, setHistoryDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [loadingHistory, setLoadingHistory] = useState(false);
+  const loadAttendanceHistory = async (date) => {
+    setLoadingHistory(true);
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5000/api/attendance?date=${date}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to load attendance history");
+      }
+
+      const data = await response.json();
+
+      setAttendanceHistory(data);
+
+    } catch (error) {
+
+      console.error(
+        "Attendance history error:",
+        error
+      );
+
+      setAttendanceHistory([]);
+
+    } finally {
+
+      setLoadingHistory(false);
+
+    }
+  };
+  useEffect(() => {
+    loadAttendanceHistory(historyDate);
+  }, [historyDate]);
   return (
     <div className="app">
 
@@ -492,312 +647,612 @@ function App() {
 
         </div>
       </section>
-         {/* ==================== TRAINING SCHEDULE ==================== */}
-      <section className="training-section" id="training">
-        <div className="training-container">
+      {/* ==================== TRAINING SCHEDULE ==================== */}
 
-          <div className="training-header">
-            <span className="training-label">🎾 KYU TENNIS TEAM</span>
-            <h2>Training Schedule</h2>
+      <section className="training-section" id="training">
+
+        <div className="section-header">
+          <span className="section-tag">TRAINING</span>
+
+          <h2>Training Schedule</h2>
+
+          <p>
+            Stay consistent, sharpen your skills, and prepare for
+            every match with our weekly training sessions.
+          </p>
+        </div>
+
+        {loadingTraining ? (
+
+          <div className="training-loading">
+            <p>Loading training schedule...</p>
+          </div>
+
+        ) : trainingSessions.length === 0 ? (
+
+          <div className="no-training">
+            <div className="training-icon">
+              🎾
+            </div>
+
+            <h3>No training sessions scheduled</h3>
+
             <p>
-              Stay updated with our weekly training sessions and improve your game.
+              The training schedule will be updated soon.
             </p>
           </div>
+
+        ) : (
 
           <div className="training-grid">
 
-            <div className="training-card">
-              <div className="training-day">MONDAY</div>
-              <div className="training-icon">🎾</div>
-              <h3>Fitness & Conditioning</h3>
-              <p className="training-time">4:00 PM – 6:00 PM</p>
-              <p className="training-location">📍 University Tennis Court</p>
-              <span className="training-level">All Players</span>
-            </div>
+            {trainingSessions.map((session) => (
 
-            <div className="training-card">
-              <div className="training-day">WEDNESDAY</div>
-              <div className="training-icon">🏃</div>
-              <h3>Technical Training</h3>
-              <p className="training-time">4:00 PM – 6:00 PM</p>
-              <p className="training-location">📍 University Tennis Court</p>
-              <span className="training-level">All Players</span>
-            </div>
+              <div
+                className="training-card"
+                key={session.id}
+              >
 
-            <div className="training-card">
-              <div className="training-day">FRIDAY</div>
-              <div className="training-icon">🔥</div>
-              <h3>Match Practice</h3>
-              <p className="training-time">3:30 PM – 6:00 PM</p>
-              <p className="training-location">📍 University Tennis Court</p>
-              <span className="training-level">Intermediate & Advanced</span>
-            </div>
+                <div className="training-card-icon">
+                  🎾
+                </div>
 
-            <div className="training-card">
-              <div className="training-day">SATURDAY</div>
-              <div className="training-icon">🏆</div>
-              <h3>Team Practice</h3>
-              <p className="training-time">9:00 AM – 12:00 PM</p>
-              <p className="training-location">📍 University Tennis Court</p>
-              <span className="training-level">Team Members</span>
-            </div>
+                <div className="training-card-content">
+
+                  <h3>
+                    {session.day}
+                  </h3>
+
+                  <div className="training-time">
+                    🕒 {session.time}
+                  </div>
+
+                  <p>
+                    {session.activity}
+                  </p>
+
+                  {session.location && (
+                    <div className="training-location">
+                      📍 {session.location}
+                    </div>
+                  )}
+
+                </div>
+
+              </div>
+
+            ))}
 
           </div>
 
-          <div className="training-note">
-            <strong>📌 Training Reminder:</strong>
-            <span>
-              Please arrive at least 15 minutes before training begins and carry
-              your tennis racket, sports shoes and water.
-            </span>
-          </div>
+        )}
 
-        </div>
       </section>
-   {/* ==================== ANNOUNCEMENTS ==================== */}
-<section className="announcements-section" id="announcements">
-        <div className="announcements-container">
 
-          <div className="announcements-header">
-            <span className="announcements-label">📢 KYU TENNIS TEAM</span>
-            <h2>Announcements</h2>
+      {/* ==================== ANNOUNCEMENTS SECTION ==================== */}
+
+      <section className="announcements-section" id="announcements">
+
+        <div className="section-header">
+          <span className="section-tag">LATEST UPDATES</span>
+
+          <h2>Announcements</h2>
+
+          <p>
+            Stay updated with the latest news, events, and activities
+            from the Kirinyaga University Tennis Club.
+          </p>
+        </div>
+
+        {loadingAnnouncements ? (
+
+          <div className="announcements-loading">
+            <p>Loading announcements...</p>
+          </div>
+
+        ) : announcements.length === 0 ? (
+
+          <div className="no-announcements">
+            <div className="announcement-icon">
+              📢
+            </div>
+
+            <h3>No announcements yet</h3>
+
             <p>
-              Keep up with the latest news, updates and important team information.
+              Check back soon for the latest updates from the
+              Kirinyaga University Tennis Club.
             </p>
           </div>
 
-          <div className="announcements-list">
+        ) : (
 
-            <div className="announcement-card">
-              <div className="announcement-icon">🎾</div>
+          <div className="announcements-grid">
 
-              <div className="announcement-content">
-                <span className="announcement-date">09 SEPT 2026</span>
-                <h3>Weekly Training Sessions</h3>
+            {announcements.map((announcement) => (
+
+              <div
+                className="announcement-card"
+                key={announcement.id}
+              >
+
+                <div className="announcement-card-top">
+
+                  <span className="announcement-icon">
+                    📢
+                  </span>
+
+                  <span className="announcement-date">
+                    {announcement.date}
+                  </span>
+
+                </div>
+
+                <h3>
+                  {announcement.title}
+                </h3>
+
                 <p>
-                  All team members are reminded to attend the scheduled training
-                  sessions this week. Consistent attendance is important for
-                  individual and team development.
+                  {announcement.message}
                 </p>
+
               </div>
 
-              <span className="announcement-tag important">Important</span>
-            </div>
-
-
-            <div className="announcement-card">
-              <div className="announcement-icon">🏆</div>
-
-              <div className="announcement-content">
-                <span className="announcement-date">08 SEPT 2026</span>
-                <h3>Upcoming Tennis Matches</h3>
-                <p>
-                  Players selected for the upcoming matches should report for
-                  additional preparation and match practice.
-                </p>
-              </div>
-
-              <span className="announcement-tag match">Matches</span>
-            </div>
-
-
-            <div className="announcement-card">
-              <div className="announcement-icon">📋</div>
-
-              <div className="announcement-content">
-                <span className="announcement-date">07 SEPT 2026</span>
-                <h3>New Members Welcome</h3>
-                <p>
-                  Interested students can register to join the KYU Tennis Team
-                  using the registration form below.
-                </p>
-              </div>
-
-              <span className="announcement-tag new">New</span>
-            </div>
+            ))}
 
           </div>
 
-          <div className="announcement-footer">
-            <p>💡 Check this section regularly for new team updates.</p>
-          </div>
+        )}
+
+      </section>
+      {/* ==================== DAILY ATTENDANCE ==================== */}
+
+      <section
+        className="attendance-section"
+        id="attendance"
+      >
+
+        <div className="section-header">
+
+          <span className="section-tag">
+            TEAM MANAGEMENT
+          </span>
+
+          <h2>
+            Daily Attendance
+          </h2>
+
+          <p>
+            Keep track of player attendance during training
+            sessions and team activities.
+          </p>
 
         </div>
-      </section>      
-      {/* ================= DAILY ATTENDANCE TRACKER ================= */}
-      <section className="attendance-section" id="attendance">
-        <div className="attendance-container">
 
-          {/* Section Header */}
-          <div className="attendance-header">
-            <div>
-              <span className="attendance-label">KYU TENNIS TEAM</span>
-              <h2>Daily Attendance</h2>
+
+        {/* SUCCESS / ERROR MESSAGE */}
+
+        {attendanceMessage && (
+          <div className="attendance-message">
+            {attendanceMessage}
+          </div>
+        )}
+
+
+        {/* LOADING */}
+
+        {loadingPlayers ? (
+
+          <div className="attendance-loading">
+            <p>Loading players...</p>
+          </div>
+
+        ) : players.length === 0 ? (
+
+          <div className="no-players">
+
+            <div className="attendance-icon">
+              🎾
+            </div>
+
+            <h3>
+              No players registered
+            </h3>
+
+            <p>
+              Players will appear here once they have
+              been added to the tennis team.
+            </p>
+
+          </div>
+
+        ) : (
+
+          <div className="attendance-container">
+
+            {/* DATE */}
+
+            <div className="attendance-header">
+
+              <div>
+                <h3>
+                  Today's Attendance
+                </h3>
+
+                <p>
+                  {new Date().toLocaleDateString(
+                    "en-KE",
+                    {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric"
+                    }
+                  )}
+                </p>
+              </div>
+
+              <div className="attendance-count">
+
+                <strong>
+                  {
+                    Object.keys(attendance).length
+                  }
+                </strong>
+
+                <span>
+                  / {players.length} marked
+                </span>
+
+              </div>
+
+            </div>
+
+
+            {/* PLAYERS */}
+
+            <div className="attendance-list">
+
+              {players.map((player) => (
+
+                <div
+                  className="attendance-row"
+                  key={player.id}
+                >
+
+                  {/* PLAYER */}
+
+                  <div className="player-info">
+
+                    <div className="player-avatar">
+                      {player.name
+                        .charAt(0)
+                        .toUpperCase()}
+                    </div>
+
+                    <div>
+
+                      <h4>
+                        {player.name}
+                      </h4>
+
+                      <p>
+                        {player.course || "Student"}
+                        {player.position &&
+                          ` • ${player.position}`}
+                      </p>
+
+                    </div>
+
+                  </div>
+
+
+                  {/* BUTTONS */}
+
+                  <div className="attendance-actions">
+                    <button
+                      className={
+                        attendance[player.id] === "Present"
+                          ? "attendance-btn present active"
+                          : "attendance-btn present"
+                      }
+                      onClick={() =>
+                        markAttendance(player.id, "Present")
+                      }
+                    >
+                      ✓ Present
+                    </button>
+
+                    <button
+                      className={
+                        attendance[player.id] === "Absent"
+                          ? "attendance-btn absent active"
+                          : "attendance-btn absent"
+                      }
+                      onClick={() =>
+                        markAttendance(player.id, "Absent")
+                      }
+                    >
+                      ✕ Absent
+                    </button>
+
+
+                    <button
+                      className={
+                        attendance[player.id] === "Absent"
+                          ? "attendance-btn absent active"
+                          : "attendance-btn absent"
+                      }
+                      onClick={() =>
+                        markAttendance(
+                          player.id,
+                          "Absent"
+                        )
+                      }
+                    >
+                      ✕ Absent
+                    </button>
+
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
+
+          </div>
+
+        )}
+
+      </section>
+      {/* ==================== ATTENDANCE HISTORY ==================== */}
+
+      <section
+        className="attendance-history-section"
+        id="attendance-history"
+      >
+
+        <div className="section-header">
+
+          <span className="section-tag">
+            TEAM RECORDS
+          </span>
+
+          <h2>
+            Attendance History
+          </h2>
+
+          <p>
+            View attendance records for previous training
+            sessions and team activities.
+          </p>
+
+        </div>
+
+
+        <div className="attendance-history-container">
+
+          {/* DATE SELECTOR */}
+
+          <div className="history-controls">
+
+            <div className="history-date-control">
+
+              <label htmlFor="attendance-date">
+                Select Date
+              </label>
+
+              <input
+                id="attendance-date"
+                type="date"
+                value={historyDate}
+                onChange={(e) => {
+                  setHistoryDate(e.target.value);
+                }}
+              />
+
+            </div>
+
+
+            <button
+              className="view-history-btn"
+              onClick={() =>
+                loadAttendanceHistory(historyDate)
+              }
+            >
+              View Attendance
+            </button>
+
+          </div>
+
+
+          {/* RESULTS */}
+
+          {loadingHistory ? (
+
+            <div className="history-loading">
               <p>
-                Track team members' attendance during daily tennis training
-                sessions.
+                Loading attendance records...
               </p>
             </div>
 
-            <div className="attendance-date">
-              <span>Today's Date</span>
-              <strong>
-                {new Date().toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })}
-              </strong>
-            </div>
-          </div>
+          ) : attendanceHistory.length === 0 ? (
 
-          {/* Attendance Summary Cards */}
-          <div className="attendance-cards">
+            <div className="no-history">
 
-            <div className="attendance-card">
-              <div className="attendance-card-icon">👥</div>
-              <div>
-                <span>Total Members</span>
-                <h3>45</h3>
-              </div>
-            </div>
-
-            <div className="attendance-card">
-              <div className="attendance-card-icon">✅</div>
-              <div>
-                <span>Present</span>
-                <h3>38</h3>
-              </div>
-            </div>
-
-            <div className="attendance-card">
-              <div className="attendance-card-icon">❌</div>
-              <div>
-                <span>Absent</span>
-                <h3>5</h3>
-              </div>
-            </div>
-
-            <div className="attendance-card">
-              <div className="attendance-card-icon">⏰</div>
-              <div>
-                <span>Late</span>
-                <h3>2</h3>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Attendance Records */}
-          <div className="attendance-records">
-
-            <div className="attendance-records-header">
-              <div>
-                <h3>Today's Attendance</h3>
-                <p>Current attendance records for today's training.</p>
+              <div className="history-icon">
+                📋
               </div>
 
-              <button className="mark-attendance-btn">
-                + Mark Attendance
-              </button>
+              <h3>
+                No attendance records
+              </h3>
+
+              <p>
+                There are no attendance records for{" "}
+                {new Date(
+                  historyDate + "T00:00:00"
+                ).toLocaleDateString(
+                  "en-KE",
+                  {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                  }
+                )}.
+              </p>
+
             </div>
 
-            {/* Attendance Table */}
-            <div className="attendance-table-wrapper">
-              <table className="attendance-table">
-                <thead>
-                  <tr>
-                    <th>Member</th>
-                    <th>Admission No.</th>
-                    <th>Time In</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
+          ) : (
 
-                <tbody>
+            <>
 
-                  <tr>
-                    <td>
-                      <div className="member-name">
-                        <div className="member-avatar">JK</div>
-                        <span>John Kamau</span>
+              {/* SUMMARY */}
+
+              <div className="attendance-summary">
+
+                <div className="summary-card">
+
+                  <span className="summary-icon">
+                    👥
+                  </span>
+
+                  <div>
+
+                    <strong>
+                      {attendanceHistory.length}
+                    </strong>
+
+                    <span>
+                      Marked
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <div className="summary-card present-summary">
+
+                  <span className="summary-icon">
+                    ✓
+                  </span>
+
+                  <div>
+
+                    <strong>
+                      {
+                        attendanceHistory.filter(
+                          (record) =>
+                            record.status === "Present"
+                        ).length
+                      }
+                    </strong>
+
+                    <span>
+                      Present
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <div className="summary-card absent-summary">
+
+                  <span className="summary-icon">
+                    ✕
+                  </span>
+
+                  <div>
+
+                    <strong>
+                      {
+                        attendanceHistory.filter(
+                          (record) =>
+                            record.status === "Absent"
+                        ).length
+                      }
+                    </strong>
+
+                    <span>
+                      Absent
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              {/* ATTENDANCE RECORDS */}
+
+              <div className="history-list">
+
+                {attendanceHistory.map((record) => (
+
+                  <div
+                    className="history-row"
+                    key={record.id}
+                  >
+
+                    <div className="history-player">
+
+                      <div className="history-avatar">
+                        {record.name
+                          .charAt(0)
+                          .toUpperCase()}
                       </div>
-                    </td>
-                    <td>S123/001/2026</td>
-                    <td>8:05 AM</td>
-                    <td>
-                      <span className="attendance-status present">
-                        Present
-                      </span>
-                    </td>
-                  </tr>
 
-                  <tr>
-                    <td>
-                      <div className="member-name">
-                        <div className="member-avatar">MW</div>
-                        <span>Mary Wanjiku</span>
+                      <div>
+
+                        <h4>
+                          {record.name}
+                        </h4>
+
+                        <p>
+                          {record.course ||
+                            "Student"}
+                        </p>
+
                       </div>
-                    </td>
-                    <td>S123/002/2026</td>
-                    <td>8:12 AM</td>
-                    <td>
-                      <span className="attendance-status present">
-                        Present
-                      </span>
-                    </td>
-                  </tr>
 
-                  <tr>
-                    <td>
-                      <div className="member-name">
-                        <div className="member-avatar">BO</div>
-                        <span>Brian Otieno</span>
-                      </div>
-                    </td>
-                    <td>S123/003/2026</td>
-                    <td>—</td>
-                    <td>
-                      <span className="attendance-status absent">
-                        Absent
-                      </span>
-                    </td>
-                  </tr>
+                    </div>
 
-                  <tr>
-                    <td>
-                      <div className="member-name">
-                        <div className="member-avatar">AN</div>
-                        <span>Ann Njeri</span>
-                      </div>
-                    </td>
-                    <td>S123/004/2026</td>
-                    <td>8:27 AM</td>
-                    <td>
-                      <span className="attendance-status late">
-                        Late
-                      </span>
-                    </td>
-                  </tr>
 
-                </tbody>
-              </table>
-            </div>
+                    <span
+                      className={
+                        record.status === "Present"
+                          ? "history-status present"
+                          : "history-status absent"
+                      }
+                    >
+                      {record.status === "Present"
+                        ? "✓ Present"
+                        : "✕ Absent"}
+                    </span>
 
-          </div>
+                  </div>
+
+                ))}
+
+              </div>
+
+            </>
+
+          )}
 
         </div>
+
       </section>
       {/* ==================== JOIN TENNIS TEAM ==================== */}
       <section className="join-tennis-section" id="join-tennis">
         {/* Your existing Join Tennis Team form goes here */}
       </section>
-      {/* ================= JOIN TENNIS TEAM FORM ================= */}
-
-      <section className="join-tennis-section" id="join-tennis">
-        {/* Your Join Tennis Team form goes here */}
-      </section>
-
       {/* ================= FIXTURES ================= */}
       <section id="fixtures" className="section">
 
@@ -895,10 +1350,14 @@ function App() {
         </div>
 
       </section>
-      {/* Join KYU Tennis Team */}
+       {/* ==================== JOIN TENNIS TEAM ==================== */}
+      <section className="join-tennis-section" id="join-tennis">
+        {/* Your existing Join Tennis Team form goes here */}
+      </section>
+       {/* ================= JOIN TENNIS TEAM FORM ================= */}
+
       <section className="join-tennis-section" id="join-tennis">
         <div className="join-tennis-container">
-
           <div className="join-tennis-heading">
             <span className="tennis-ball">🎾</span>
 
@@ -906,18 +1365,84 @@ function App() {
               <h2>Join KYU Tennis Team</h2>
               <p>
                 Ready to represent Kirinyaga University on the court?
-                Join our tennis team and be part of the game.
+                Join our tennis team and become part of the game.
               </p>
+
+              <div className="joining-fee">
+                💰 Joining Fee: <strong>KSh 500</strong>
+              </div>
             </div>
           </div>
 
-          <form className="join-tennis-form">
+          <form
+            className="join-tennis-form"
+            onSubmit={async (e) => {
+              e.preventDefault();
 
+              const form = e.currentTarget;
+              const formData = new FormData(form);
+
+              const applicationData = {
+                name: formData.get("fullName"),
+                admission_number: formData.get("admissionNumber"),
+                course: formData.get("course"),
+                year: formData.get("year"),
+                phone: formData.get("phone"),
+                email: formData.get("email"),
+                category: formData.get("category"),
+                skill_level: formData.get("skillLevel"),
+                message: formData.get("message")
+              };
+
+              try {
+                const response = await fetch(
+                  "http://127.0.0.1:5000/api/mpesa/stkpush",
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                      name: formData.get("fullName"),
+                      admission_number: formData.get("admissionNumber"),
+                      course: formData.get("course"),
+                      year: formData.get("year"),
+                      phone: formData.get("phone"),
+                      email: formData.get("email"),
+                      category: formData.get("category"),
+                      skill_level: formData.get("skillLevel"),
+                      message: formData.get("message")
+                    })
+                  }
+                );
+                const data = await response.json();
+
+                if (!response.ok || data.success !== true) {
+                  throw new Error(
+                    data.message || "Unable to start M-Pesa payment"
+                  );
+                }
+
+                alert(
+                  "M-Pesa payment request sent. Check your phone and enter your M-Pesa PIN to pay KSh 500."
+                );
+
+              } catch (error) {
+                console.error("Payment error:", error);
+
+                alert(
+                  error.message ||
+                  "Unable to connect to the payment server."
+                );
+              }
+            }}
+          >
             <div className="tennis-form-grid">
-
               <div className="tennis-field">
-                <label>Full Name</label>
+                <label htmlFor="fullName">Full Name</label>
                 <input
+                  id="fullName"
+                  name="fullName"
                   type="text"
                   placeholder="Enter your full name"
                   required
@@ -925,8 +1450,10 @@ function App() {
               </div>
 
               <div className="tennis-field">
-                <label>Admission Number</label>
+                <label htmlFor="admissionNumber">Admission Number</label>
                 <input
+                  id="admissionNumber"
+                  name="admissionNumber"
                   type="text"
                   placeholder="Enter admission number"
                   required
@@ -934,8 +1461,10 @@ function App() {
               </div>
 
               <div className="tennis-field">
-                <label>Course</label>
+                <label htmlFor="course">Course</label>
                 <input
+                  id="course"
+                  name="course"
                   type="text"
                   placeholder="e.g. BSc Information Technology"
                   required
@@ -943,28 +1472,37 @@ function App() {
               </div>
 
               <div className="tennis-field">
-                <label>Year of Study</label>
-                <select required>
+                <label htmlFor="year">Year of Study</label>
+                <select id="year" name="year" required>
                   <option value="">Select year</option>
-                  <option>1st Year</option>
-                  <option>2nd Year</option>
-                  <option>3rd Year</option>
-                  <option>4th Year</option>
+                  <option value="1st Year">1st Year</option>
+                  <option value="2nd Year">2nd Year</option>
+                  <option value="3rd Year">3rd Year</option>
+                  <option value="4th Year">4th Year</option>
                 </select>
               </div>
 
               <div className="tennis-field">
-                <label>Phone Number</label>
+                <label htmlFor="phone">M-Pesa Phone Number</label>
                 <input
+                  id="phone"
+                  name="phone"
                   type="tel"
-                  placeholder="Enter phone number"
+                  placeholder="e.g. 0712345678"
+                  pattern="^(07|01)[0-9]{8}$"
+                  title="Enter a valid Kenyan phone number e.g. 0712345678"
                   required
                 />
+                <small>
+                  The KSh 500 payment prompt will be sent to this number.
+                </small>
               </div>
 
               <div className="tennis-field">
-                <label>Email Address</label>
+                <label htmlFor="email">Email Address</label>
                 <input
+                  id="email"
+                  name="email"
                   type="email"
                   placeholder="Enter email address"
                   required
@@ -972,30 +1510,31 @@ function App() {
               </div>
 
               <div className="tennis-field">
-                <label>Playing Category</label>
-                <select required>
+                <label htmlFor="category">Playing Category</label>
+                <select id="category" name="category" required>
                   <option value="">Select category</option>
-                  <option>Singles</option>
-                  <option>Doubles</option>
-                  <option>Both</option>
+                  <option value="Singles">Singles</option>
+                  <option value="Doubles">Doubles</option>
+                  <option value="Both">Both</option>
                 </select>
               </div>
 
               <div className="tennis-field">
-                <label>Skill Level</label>
-                <select required>
+                <label htmlFor="skillLevel">Skill Level</label>
+                <select id="skillLevel" name="skillLevel" required>
                   <option value="">Select skill level</option>
-                  <option>Beginner</option>
-                  <option>Intermediate</option>
-                  <option>Advanced</option>
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
                 </select>
               </div>
-
             </div>
 
             <div className="tennis-field tennis-message">
-              <label>Why do you want to join the team?</label>
+              <label htmlFor="message">Why do you want to join the team?</label>
               <textarea
+                id="message"
+                name="message"
                 rows="4"
                 placeholder="Tell us a little about yourself and your interest in tennis..."
                 required
@@ -1004,18 +1543,30 @@ function App() {
 
             <label className="tennis-checkbox">
               <input type="checkbox" required />
-              <span>I confirm that the information provided is accurate.</span>
+              <span>
+                I confirm that the information provided is accurate and I agree to
+                pay the KSh 500 joining fee.
+              </span>
             </label>
 
+            <div className="payment-summary">
+              <div>
+                <span>🎾 Tennis Team Joining Fee</span>
+                <strong>KSh 500</strong>
+              </div>
+
+              <p>
+                An M-Pesa payment prompt will be sent to your phone after you submit
+                the form.
+              </p>
+            </div>
+
             <button type="submit" className="tennis-submit-btn">
-              🎾 Join Tennis Team
+              📱 Join & Pay KSh 500
             </button>
-
           </form>
-
         </div>
       </section>
-
       {/* ================= FOOTER ================= */}
       <footer className="footer">
 
