@@ -1174,7 +1174,108 @@ function App() {
         </div>
       </section>
 
+  
+
       <section
+        id="fixtures"
+        className="section"
+      >
+        <div className="section-heading">
+          <span>MATCH SCHEDULE</span>
+
+          <h2>
+            Fixtures & Results
+          </h2>
+        </div>
+
+        <div className="fixtures">
+
+          <Fixture
+            day="15"
+            month="OCT"
+            opponent="Kenyatta University"
+            team="Men's Tennis"
+            time="10:00 AM"
+          />
+
+          <Fixture
+            day="20"
+            month="OCT"
+            opponent="Mount Kenya University"
+            team="Women's Tennis"
+            time="2:00 PM"
+          />
+
+          <Fixture
+            day="27"
+            month="OCT"
+            opponent="University of Nairobi"
+            team="Men's Tennis"
+            time="11:00 AM"
+          />
+
+        </div>
+      </section>
+
+      <section
+        id="rankings"
+        className="section"
+      >
+        <div className="section-heading">
+          <span>LEADERBOARD</span>
+
+          <h2>
+            Player Rankings
+          </h2>
+        </div>
+
+        <div className="ranking-table">
+
+          <div className="ranking-header">
+            <span>#</span>
+            <span>Player</span>
+            <span>Team</span>
+            <span>Points</span>
+          </div>
+
+          <Ranking
+            position="1"
+            player="Jane Wanjiku"
+            team="Women"
+            points="900"
+          />
+
+          <Ranking
+            position="2"
+            player="Alex Mwangi"
+            team="Men"
+            points="850"
+          />
+
+          <Ranking
+            position="3"
+            player="Mercy Njeri"
+            team="Women"
+            points="760"
+          />
+
+          <Ranking
+            position="4"
+            player="Brian Kamau"
+            team="Men"
+            points="720"
+          />
+
+          <Ranking
+            position="5"
+            player="Kevin Maina"
+            team="Men"
+            points="650"
+          />
+
+        </div>
+      </section>
+  <section
         className="join-tennis-section"
         id="join-tennis"
       >
@@ -1429,107 +1530,6 @@ function App() {
           </form>
         </div>
       </section>
-
-      <section
-        id="fixtures"
-        className="section"
-      >
-        <div className="section-heading">
-          <span>MATCH SCHEDULE</span>
-
-          <h2>
-            Fixtures & Results
-          </h2>
-        </div>
-
-        <div className="fixtures">
-
-          <Fixture
-            day="15"
-            month="OCT"
-            opponent="Kenyatta University"
-            team="Men's Tennis"
-            time="10:00 AM"
-          />
-
-          <Fixture
-            day="20"
-            month="OCT"
-            opponent="Mount Kenya University"
-            team="Women's Tennis"
-            time="2:00 PM"
-          />
-
-          <Fixture
-            day="27"
-            month="OCT"
-            opponent="University of Nairobi"
-            team="Men's Tennis"
-            time="11:00 AM"
-          />
-
-        </div>
-      </section>
-
-      <section
-        id="rankings"
-        className="section"
-      >
-        <div className="section-heading">
-          <span>LEADERBOARD</span>
-
-          <h2>
-            Player Rankings
-          </h2>
-        </div>
-
-        <div className="ranking-table">
-
-          <div className="ranking-header">
-            <span>#</span>
-            <span>Player</span>
-            <span>Team</span>
-            <span>Points</span>
-          </div>
-
-          <Ranking
-            position="1"
-            player="Jane Wanjiku"
-            team="Women"
-            points="900"
-          />
-
-          <Ranking
-            position="2"
-            player="Alex Mwangi"
-            team="Men"
-            points="850"
-          />
-
-          <Ranking
-            position="3"
-            player="Mercy Njeri"
-            team="Women"
-            points="760"
-          />
-
-          <Ranking
-            position="4"
-            player="Brian Kamau"
-            team="Men"
-            points="720"
-          />
-
-          <Ranking
-            position="5"
-            player="Kevin Maina"
-            team="Men"
-            points="650"
-          />
-
-        </div>
-      </section>
-
       <footer className="footer">
 
         <div className="footer-content">
