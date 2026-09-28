@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 
-const API_URL = "http://127.0.0.1:5000/api";
+const API_URL = "http://tennisbackend.vercel.app//api";
 
 function App() {
   const [announcements, setAnnouncements] = useState([]);
